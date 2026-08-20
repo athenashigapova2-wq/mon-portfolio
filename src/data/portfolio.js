@@ -63,7 +63,7 @@ export const currently = [
   ['University', 'GSOM SPbU'],
   ['Exchange', 'Renmin University'],
   ['Location', 'Beijing'],
-  ['Exploring', 'AI × Finance'],
+  ['Exploring', 'Load testing, Kafka, Rabbit MQ'],
 ]
 
 export const contacts = [
