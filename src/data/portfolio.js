@@ -72,5 +72,4 @@ export const contacts = [
   ['Behance', 'https://www.behance.net/athena_shig'],
   ['YouTube', 'https://www.youtube.com/@amina_sh'],
   ['Telegram', 'https://t.me/ath_shig'],
-  ['Ami Studios', 'https://amistudios.ru'],
 ]

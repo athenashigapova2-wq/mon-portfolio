@@ -7,7 +7,7 @@ export default function ProjectPreview({ type, large = false }) {
   const photo = photos[type]
 
   return (
-    <div className={`project-visual project-visual--${type} ${large ? 'project-visual--large' : ''}`}>
+    <div className={`project-visual project-visual--${type} ${photo ? 'project-visual--photo' : ''} ${large ? 'project-visual--large' : ''}`}>
       {photo && <img className="project-visual__image" src={photo[0]} alt={photo[1]} loading="lazy" />}
       {type === 'macrocoach' && (
         <>

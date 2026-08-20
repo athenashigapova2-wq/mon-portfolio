@@ -43,14 +43,14 @@ export default function IntroSequence({ onComplete }) {
     let timer
 
     if (visibleCharacters < currentLine.length) {
-      timer = window.setTimeout(() => setVisibleCharacters((count) => count + 1), 48)
+      timer = window.setTimeout(() => setVisibleCharacters((count) => count + 1), 30)
     } else if (line < lines.length - 1) {
       timer = window.setTimeout(() => {
         setLine((index) => index + 1)
         setVisibleCharacters(0)
-      }, 950)
+      }, 520)
     } else {
-      timer = window.setTimeout(complete, 1250)
+      timer = window.setTimeout(complete, 750)
     }
 
     return () => window.clearTimeout(timer)
@@ -60,15 +60,18 @@ export default function IntroSequence({ onComplete }) {
     <motion.section
       className={`intro ${finished ? 'intro--finished' : ''}`}
       aria-label="Introduction"
-      animate={{ minHeight: finished ? '34vh' : '100svh' }}
+      animate={{ minHeight: finished ? '74svh' : '100svh' }}
       transition={{ duration: reduceMotion ? 0 : 0.65, ease: [0.22, 1, 0.36, 1] }}
     >
       <div className="intro__inner">
         <span className="eyebrow">Opening note</span>
-        <p className="intro__line" aria-live="polite">
-          {lines[line].slice(0, visibleCharacters)}
-          {!finished && <span className="intro__caret" aria-hidden="true" />}
-        </p>
+        <div className="intro__copy">
+          {lines.slice(0, line).map((sentence) => <p className="intro__line" key={sentence}>{sentence}</p>)}
+          <p className="intro__line" aria-live="polite">
+            {lines[line].slice(0, visibleCharacters)}
+            {!finished && <span className="intro__caret" aria-hidden="true" />}
+          </p>
+        </div>
         <span className="intro__count" aria-hidden="true">0{line + 1} / 05</span>
       </div>
     </motion.section>

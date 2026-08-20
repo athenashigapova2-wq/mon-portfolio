@@ -3,6 +3,7 @@ import { useCallback, useState } from 'react'
 import FeaturedProject from './components/FeaturedProject.jsx'
 import IntroSequence from './components/IntroSequence.jsx'
 import ProjectIndex from './components/ProjectIndex.jsx'
+import { CookieConsent, CookiePolicyPage } from './components/CookieConsent.jsx'
 import { contacts, currently } from './data/portfolio.js'
 
 function SiteHeader({ visible }) {
@@ -75,7 +76,6 @@ function Contacts() {
     <section className="elsewhere section" id="contacts" aria-labelledby="contacts-title">
       <div className="section-heading"><h2 id="contacts-title">Contacts</h2><span>Links / 06</span></div>
       <div className="elsewhere__layout">
-        <div className="telegram-note"><span>Personal</span><h3>Telegram</h3><p>Occasional useful thoughts.<br />Mostly life.</p></div>
         <ul className="link-list">
           {contacts.map(([label, href], index) => (
             <li key={label}><a href={href} target="_blank" rel="noreferrer"><span>0{index + 1}</span><strong>{label}</strong><span aria-hidden="true">↗</span></a></li>
@@ -101,6 +101,10 @@ export default function App() {
   const [introComplete, setIntroComplete] = useState(false)
   const finishIntro = useCallback(() => setIntroComplete(true), [])
 
+  if (window.location.pathname.replace(/\/$/, '') === '/cookies') {
+    return <CookiePolicyPage />
+  }
+
   return (
     <div id="top">
       <a className="skip-link" href="#work">Skip to selected work</a>
@@ -115,6 +119,7 @@ export default function App() {
         <Contacts />
       </main>
       <Footer />
+      <CookieConsent />
     </div>
   )
 }
