@@ -160,6 +160,21 @@ a:focus-visible { outline: 2px solid currentColor; outline-offset: 5px; }
 .cookie-notice__actions { display: flex; justify-content: flex-end; align-items: center; gap: 10px; margin-top: 18px; }
 .cookie-notice button, .cookie-page__save { padding: 10px 16px; border: 0; border-radius: 0; color: var(--dark); background: #f4f4ef; font: inherit; font-size: 11px; text-transform: uppercase; letter-spacing: .06em; cursor: pointer; }
 .cookie-notice .cookie-notice__decline { color: #f4f4ef; background: transparent; border: 1px solid #666; }
+.cookie-notice--policy { width: min(540px, calc(100vw - 36px)); max-height: calc(100svh - 36px); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; }
+.cookie-policy-panel__top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; color: #969691; font-size: 10px; text-transform: uppercase; letter-spacing: .1em; }
+.cookie-notice .cookie-policy-panel__close { width: 30px; height: 30px; padding: 0; color: #f4f4ef; background: transparent; border: 1px solid #555; font-size: 20px; line-height: 1; }
+.cookie-notice--policy > h2 { margin-bottom: 6px; font-size: clamp(30px, 4vw, 46px); letter-spacing: -.045em; }
+.cookie-notice .cookie-policy-panel__updated { margin-bottom: 30px; color: #8f8f8a; font-size: 10px; text-transform: uppercase; letter-spacing: .08em; }
+.cookie-policy-panel__settings { padding: 22px 0 30px; border-top: 1px solid #464646; border-bottom: 1px solid #464646; }
+.cookie-policy-panel__settings h3 { margin: 0 0 16px; font-size: 16px; font-weight: 500; }
+.cookie-notice--policy .cookie-setting { border-color: #464646; }
+.cookie-notice--policy .cookie-setting div span, .cookie-notice--policy .cookie-setting__status { color: #9f9f9a; }
+.cookie-notice--policy .cookie-choice { padding-top: 16px; }
+.cookie-notice--policy .cookie-page__save { margin-top: 22px; color: var(--dark); background: #f4f4ef; }
+.cookie-notice--policy .policy-copy { margin-top: 0; padding-top: 10px; border-top: 0; }
+.cookie-notice--policy .policy-copy h3 { margin: 32px 0 10px; color: #f4f4ef; font-size: 18px; }
+.cookie-notice--policy .policy-copy p, .cookie-notice--policy .policy-copy li { color: #c8c8c3; font-size: 13px; line-height: 1.65; }
+.cookie-notice--policy .policy-copy a { color: #f4f4ef; }
 
 .cookie-page { width: var(--page); min-height: 100svh; margin: 0 auto; padding: 28px 0 65px; }
 .cookie-page__back { display: inline-block; font-size: 11px; text-transform: uppercase; letter-spacing: .08em; }

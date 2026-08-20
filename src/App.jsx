@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react'
 import FeaturedProject from './components/FeaturedProject.jsx'
 import IntroSequence from './components/IntroSequence.jsx'
 import ProjectIndex from './components/ProjectIndex.jsx'
-import { CookieConsent, CookiePolicyPage } from './components/CookieConsent.jsx'
+import { CookieConsent } from './components/CookieConsent.jsx'
 import { contacts, currently } from './data/portfolio.js'
 
 function SiteHeader({ visible }) {
@@ -101,10 +101,6 @@ function Footer() {
 export default function App() {
   const [introComplete, setIntroComplete] = useState(false)
   const finishIntro = useCallback(() => setIntroComplete(true), [])
-
-  if (window.location.pathname.replace(/\/$/, '') === '/cookies') {
-    return <CookiePolicyPage />
-  }
 
   return (
     <div id="top">
