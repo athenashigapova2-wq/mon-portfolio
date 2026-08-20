@@ -2,11 +2,12 @@ import { motion, useReducedMotion } from 'framer-motion'
 import { useCallback, useEffect, useState } from 'react'
 
 const lines = [
-  'I drew in Figma all day long.',
-  'I built a place to teach online.',
-  'I wondered how data centers could last longer.',
-  'And how to train and eat a little smarter.',
-  'I left the answers below.',
+  'I design in Figma, pixel by pixel,',
+  'Build platforms that make learning simple.',
+  'How can data centers run smarter and longer?',
+  'How can we train, eat well, and grow stronger?',
+  'Projects, experiments, answers in view —',
+  'Scroll down and see what I’ve been up to.',
 ]
 
 export default function IntroSequence({ onComplete }) {
@@ -72,7 +73,9 @@ export default function IntroSequence({ onComplete }) {
             {!finished && <span className="intro__caret" aria-hidden="true" />}
           </p>
         </div>
-        <span className="intro__count" aria-hidden="true">0{line + 1} / 05</span>
+        <span className="intro__count" aria-hidden="true">
+          {String(line + 1).padStart(2, '0')} / {String(lines.length).padStart(2, '0')}
+        </span>
       </div>
     </motion.section>
   )
