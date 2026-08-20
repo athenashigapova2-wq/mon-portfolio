@@ -61,7 +61,7 @@ export default function IntroSequence({ onComplete }) {
     <motion.section
       className={`intro ${finished ? 'intro--finished' : ''}`}
       aria-label="Introduction"
-      animate={{ minHeight: finished ? '74svh' : '100svh' }}
+      animate={{ minHeight: finished ? '52svh' : '72svh' }}
       transition={{ duration: reduceMotion ? 0 : 0.65, ease: [0.22, 1, 0.36, 1] }}
     >
       <div className="intro__inner">

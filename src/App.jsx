@@ -92,6 +92,7 @@ function Footer() {
       <div><strong>Amina Shigapova</strong><span>© 2026</span></div>
       {/* TODO: verify that the display email and mailto address intentionally differ. */}
       <a href="mailto:amina.shigapova.2006@mail.ru">amina.shigapova.06@mail.ru</a>
+      <a href="/cookies">Cookie policy</a>
       <a href="#top">Back to top ↑</a>
     </footer>
   )
