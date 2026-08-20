@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react'
 import FeaturedProject from './components/FeaturedProject.jsx'
 import IntroSequence from './components/IntroSequence.jsx'
 import ProjectIndex from './components/ProjectIndex.jsx'
-import { currently, elsewhere } from './data/portfolio.js'
+import { contacts, currently } from './data/portfolio.js'
 
 function SiteHeader({ visible }) {
   return (
@@ -19,7 +19,7 @@ function SiteHeader({ visible }) {
       <nav aria-label="Primary navigation">
         <a href="#work">Work</a>
         <a href="#about">About</a>
-        <a href="#elsewhere">Elsewhere</a>
+        <a href="#contacts">Contacts</a>
       </nav>
     </motion.header>
   )
@@ -70,14 +70,14 @@ function Notes() {
   )
 }
 
-function Elsewhere() {
+function Contacts() {
   return (
-    <section className="elsewhere section" id="elsewhere" aria-labelledby="elsewhere-title">
-      <div className="section-heading"><h2 id="elsewhere-title">Elsewhere</h2><span>Links / 06</span></div>
+    <section className="elsewhere section" id="contacts" aria-labelledby="contacts-title">
+      <div className="section-heading"><h2 id="contacts-title">Contacts</h2><span>Links / 06</span></div>
       <div className="elsewhere__layout">
         <div className="telegram-note"><span>Personal</span><h3>Telegram</h3><p>Occasional useful thoughts.<br />Mostly life.</p></div>
         <ul className="link-list">
-          {elsewhere.map(([label, href], index) => (
+          {contacts.map(([label, href], index) => (
             <li key={label}><a href={href} target="_blank" rel="noreferrer"><span>0{index + 1}</span><strong>{label}</strong><span aria-hidden="true">↗</span></a></li>
           ))}
         </ul>
@@ -112,7 +112,7 @@ export default function App() {
         <FeaturedProject />
         <About />
         <Notes />
-        <Elsewhere />
+        <Contacts />
       </main>
       <Footer />
     </div>

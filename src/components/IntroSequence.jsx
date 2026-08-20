@@ -1,4 +1,4 @@
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import { useCallback, useEffect, useState } from 'react'
 
 const lines = [
@@ -11,11 +11,13 @@ const lines = [
 
 export default function IntroSequence({ onComplete }) {
   const reduceMotion = useReducedMotion()
-  const [line, setLine] = useState(reduceMotion ? lines.length - 1 : 0)
-  const [finished, setFinished] = useState(Boolean(reduceMotion))
+  const [line, setLine] = useState(0)
+  const [visibleCharacters, setVisibleCharacters] = useState(0)
+  const [finished, setFinished] = useState(false)
 
   const complete = useCallback(() => {
     setLine(lines.length - 1)
+    setVisibleCharacters(lines.at(-1).length)
     setFinished(true)
     onComplete()
   }, [onComplete])
@@ -29,16 +31,30 @@ export default function IntroSequence({ onComplete }) {
     const events = ['wheel', 'pointerdown', 'touchstart', 'keydown']
     events.forEach((event) => window.addEventListener(event, complete, { once: true, passive: true }))
 
-    const timers = lines.slice(1).map((_, index) =>
-      window.setTimeout(() => setLine(index + 1), 620 * (index + 1)),
-    )
-    timers.push(window.setTimeout(complete, 620 * lines.length + 300))
-
     return () => {
       events.forEach((event) => window.removeEventListener(event, complete))
-      timers.forEach(window.clearTimeout)
     }
   }, [complete, reduceMotion])
+
+  useEffect(() => {
+    if (reduceMotion || finished) return undefined
+
+    const currentLine = lines[line]
+    let timer
+
+    if (visibleCharacters < currentLine.length) {
+      timer = window.setTimeout(() => setVisibleCharacters((count) => count + 1), 48)
+    } else if (line < lines.length - 1) {
+      timer = window.setTimeout(() => {
+        setLine((index) => index + 1)
+        setVisibleCharacters(0)
+      }, 950)
+    } else {
+      timer = window.setTimeout(complete, 1250)
+    }
+
+    return () => window.clearTimeout(timer)
+  }, [complete, finished, line, reduceMotion, visibleCharacters])
 
   return (
     <motion.section
@@ -49,18 +65,10 @@ export default function IntroSequence({ onComplete }) {
     >
       <div className="intro__inner">
         <span className="eyebrow">Opening note</span>
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.p
-            key={line}
-            className="intro__line"
-            initial={reduceMotion ? false : { opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={reduceMotion ? {} : { opacity: 0, y: -6 }}
-            transition={{ duration: 0.28, ease: 'easeOut' }}
-          >
-            {lines[line]}
-          </motion.p>
-        </AnimatePresence>
+        <p className="intro__line" aria-live="polite">
+          {lines[line].slice(0, visibleCharacters)}
+          {!finished && <span className="intro__caret" aria-hidden="true" />}
+        </p>
         <span className="intro__count" aria-hidden="true">0{line + 1} / 05</span>
       </div>
     </motion.section>

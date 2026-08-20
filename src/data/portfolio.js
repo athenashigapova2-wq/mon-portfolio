@@ -66,7 +66,7 @@ export const currently = [
   ['Exploring', 'AI × Finance'],
 ]
 
-export const elsewhere = [
+export const contacts = [
   ['GitHub', 'https://github.com/athenashigapova2-wq'],
   ['LinkedIn', 'https://www.linkedin.com/in/amina-shigapova-083b70401/'],
   ['Behance', 'https://www.behance.net/athena_shig'],
