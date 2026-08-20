@@ -76,7 +76,7 @@ a:focus-visible { outline: 2px solid currentColor; outline-offset: 5px; }
 .project-visual--photo { min-height: 0; padding: 14px; display: block; background: #efefeb; }
 .project-visual__image { display: block; position: static; width: 100%; height: auto; object-fit: contain; }
 .project-visual--large { min-height: min(64vw, 780px); padding: clamp(32px, 7vw, 108px); }
-.placeholder-flag { position: absolute; z-index: 2; top: 12px; right: 12px; padding: 6px 8px; background: rgba(247,247,245,.88); font-size: 8px; letter-spacing: .09em; color: var(--muted); }
+.placeholder-flag { position: absolute; z-index: 2; top: 8px; right: 8px; padding: 4px 6px; background: rgba(247,247,245,.88); font-size: 6px; letter-spacing: .08em; color: var(--muted); }
 .phone-ui { width: min(78%, 275px); padding: 18px; background: #fafaf8; border: 1px solid #c9c9c2; box-shadow: 0 18px 40px rgba(0,0,0,.08); }
 .project-visual--large .phone-ui { width: min(42%, 370px); padding: 28px; }
 .phone-ui__top, .phone-ui__row { display: flex; justify-content: space-between; font-size: 9px; text-transform: uppercase; letter-spacing: .05em; }
@@ -115,6 +115,7 @@ a:focus-visible { outline: 2px solid currentColor; outline-offset: 5px; }
 .featured__metadata div:nth-child(3) { grid-column: 11 / 13; }
 .featured__metadata dt { margin-bottom: 9px; color: #858581; font-size: 11px; text-transform: uppercase; letter-spacing: .1em; }
 .featured__metadata dd { margin: 0; color: #e3e3df; font-size: clamp(14px, 1.15vw, 17px); line-height: 1.5; }
+.featured__metadata a { color: inherit; text-decoration: underline; text-decoration-color: #6c6c68; text-underline-offset: 4px; }
 .featured .project-visual { background: #c9c9c0; }
 .featured__foot { display: grid; grid-template-columns: repeat(12, 1fr); align-items: start; padding: 24px 0 42px; border-bottom: 1px solid #414141; }
 .featured__foot p { grid-column: 1 / 6; margin: 0; color: #aaa; font-size: 13px; line-height: 1.5; }
@@ -154,12 +155,12 @@ a:focus-visible { outline: 2px solid currentColor; outline-offset: 5px; }
 .footer > a:nth-child(3) { text-align: center; }
 .footer > a:last-child { text-align: right; }
 
-.cookie-notice { position: fixed; z-index: 50; right: 18px; bottom: 18px; width: min(420px, calc(100vw - 32px)); padding: 20px; color: #f4f4ef; background: var(--dark); border: 1px solid #3b3b3b; box-shadow: 0 16px 50px rgba(0,0,0,.2); }
-.cookie-notice h2 { margin: 0 0 10px; font-size: 19px; letter-spacing: -.025em; font-weight: 500; }
-.cookie-notice p { margin: 0 0 12px; color: #c8c8c3; font-size: 12px; line-height: 1.5; }
-.cookie-notice__more { color: #f4f4ef; font-size: 11px; text-decoration: underline; text-underline-offset: 3px; }
-.cookie-notice__actions { display: flex; justify-content: flex-end; align-items: center; gap: 10px; margin-top: 18px; }
-.cookie-notice button, .cookie-page__save { padding: 10px 16px; border: 0; border-radius: 0; color: var(--dark); background: #f4f4ef; font: inherit; font-size: 11px; text-transform: uppercase; letter-spacing: .06em; cursor: pointer; }
+.cookie-notice { position: fixed; z-index: 50; right: 16px; bottom: 16px; width: min(350px, calc(100vw - 32px)); padding: 15px 16px; color: #f4f4ef; background: var(--dark); border: 1px solid #3b3b3b; box-shadow: 0 12px 36px rgba(0,0,0,.18); }
+.cookie-notice h2 { margin: 0 0 7px; font-size: 16px; letter-spacing: -.02em; font-weight: 500; }
+.cookie-notice p { margin: 0 0 9px; color: #c8c8c3; font-size: 10px; line-height: 1.45; }
+.cookie-notice__more { color: #f4f4ef; font-size: 9px; text-decoration: underline; text-underline-offset: 3px; }
+.cookie-notice__actions { display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin-top: 13px; }
+.cookie-notice button, .cookie-page__save { padding: 8px 12px; border: 0; border-radius: 0; color: var(--dark); background: #f4f4ef; font: inherit; font-size: 9px; text-transform: uppercase; letter-spacing: .06em; cursor: pointer; }
 .cookie-notice .cookie-notice__decline { color: #f4f4ef; background: transparent; border: 1px solid #666; }
 .cookie-notice--policy { width: min(540px, calc(100vw - 36px)); max-height: calc(100svh - 36px); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; }
 .cookie-policy-panel__top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; color: #969691; font-size: 10px; text-transform: uppercase; letter-spacing: .1em; }

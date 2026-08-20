@@ -17,7 +17,7 @@ export default function FeaturedProject() {
       <dl className="featured__metadata">
         <div><dt>Role</dt><dd>{project.role}</dd></div>
         <div><dt>Stack</dt><dd>{project.stack}</dd></div>
-        <div><dt>Source</dt><dd>Private / not linked</dd></div>
+        <div><dt>Source</dt><dd><a href="https://github.com/athenashigapova2-wq/macrocoach" target="_blank" rel="noreferrer">Private / GitHub repository ↗</a></dd></div>
       </dl>
       <ProjectPreview type={project.preview} large />
       <div className="featured__foot">

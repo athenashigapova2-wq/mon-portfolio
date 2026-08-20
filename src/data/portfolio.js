@@ -71,5 +71,5 @@ export const contacts = [
   ['LinkedIn', 'https://www.linkedin.com/in/amina-shigapova-083b70401/'],
   ['Behance', 'https://www.behance.net/athena_shig'],
   ['YouTube', 'https://www.youtube.com/@amina_sh'],
-  ['Telegram', 'https://t.me/ath_shig'],
+  ['Telegram channel', 'https://t.me/ath_shig'],
 ]
