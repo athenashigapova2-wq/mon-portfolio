@@ -6,7 +6,7 @@ const lines = [
   'Build platforms that make learning simple.',
   'How can data centers run smarter and longer?',
   'How can we train, eat well, and grow stronger?',
-  'Projects, experiments, answers in view —',
+  'Projects, experiments, answers in view –',
   'Scroll down and see what I’ve been up to.',
 ]
 
@@ -67,8 +67,8 @@ export default function IntroSequence({ onComplete }) {
       <div className="intro__inner">
         <span className="eyebrow">Opening note</span>
         <div className="intro__copy">
-          {lines.slice(0, line).map((sentence) => <p className="intro__line" key={sentence}>{sentence}</p>)}
-          <p className="intro__line" aria-live="polite">
+          {lines.slice(0, line).map((sentence, index) => <p className={`intro__line ${index === 3 ? 'intro__line--break-after' : ''}`} key={sentence}>{sentence}</p>)}
+          <p className={`intro__line ${line === 3 ? 'intro__line--break-after' : ''}`} aria-live="polite">
             {lines[line].slice(0, visibleCharacters)}
             {!finished && <span className="intro__caret" aria-hidden="true" />}
           </p>
