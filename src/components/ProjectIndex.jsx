@@ -4,21 +4,20 @@ import ProjectPreview from './ProjectPreview.jsx'
 
 function ProjectRow({ project, active, onSelect }) {
   return (
-    <a
+    <article
       className={`project-row ${active ? 'project-row--active' : ''}`}
-      href={project.href}
-      target={project.external ? '_blank' : undefined}
-      rel={project.external ? 'noreferrer' : undefined}
       onMouseEnter={() => onSelect(project.id)}
-      onFocus={() => onSelect(project.id)}
     >
       <span className="project-row__number">{project.number}</span>
-      <span className="project-row__title">{project.title}</span>
-      <span className="project-row__category">{project.category}</span>
+      <div className="project-row__content">
+        <a className="project-row__title" href={project.href} target={project.external ? '_blank' : undefined} rel={project.external ? 'noreferrer' : undefined} onFocus={() => onSelect(project.id)}>{project.title}</a>
+        <p className="project-row__category">{project.description ?? project.category}</p>
+        {project.links && <div className="project-row__links">{project.links.map(([label, href]) => <a href={href} target="_blank" rel="noreferrer" key={label}>{label}</a>)}</div>}
+      </div>
       <span className="project-row__year">{project.year}</span>
-      <span className="project-row__arrow" aria-hidden="true">{project.external ? '↗' : '→'}</span>
+      <a className="project-row__arrow" href={project.href} target={project.external ? '_blank' : undefined} rel={project.external ? 'noreferrer' : undefined} aria-label={`Open ${project.title}`}>{project.external ? '↗' : '→'}</a>
       <div className="project-row__mobile-preview"><ProjectPreview type={project.preview} /></div>
-    </a>
+    </article>
   )
 }
 

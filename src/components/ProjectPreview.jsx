@@ -2,7 +2,7 @@ export default function ProjectPreview({ type, large = false }) {
   const photos = {
     athena: ['/projects/macrocoach.png', 'Athena AI nutrition, AI coach, training and shopping-list screens'],
     ami: ['/projects/ami-studios.png', 'Ami Studios language-learning website'],
-    model: ['/projects/data-center.png', 'Digital Twin data-center simulator'],
+    model: ['/projects/data-center.png', 'Streamlit data-center cooling technology comparison model'],
     design: ['/projects/behance.png', 'Amina Shigapova Behance portfolio'],
   }
   const photo = photos[type]

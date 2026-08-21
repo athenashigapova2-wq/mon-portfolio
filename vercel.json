@@ -9,14 +9,6 @@
       "destination": "/index.html"
     },
     {
-      "source": "/data-center",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/ami-studios",
-      "destination": "/index.html"
-    },
-    {
       "source": "/design",
       "destination": "/index.html"
     }

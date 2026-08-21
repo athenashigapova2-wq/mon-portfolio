@@ -116,8 +116,6 @@ export default function App() {
   }
 
   const projectRoutes = {
-    '/data-center': 'sustainability',
-    '/ami-studios': 'ami-studios',
     '/design': 'design',
   }
   const projectId = projectRoutes[window.location.pathname.replace(/\/$/, '')]
