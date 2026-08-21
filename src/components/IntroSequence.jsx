@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react'
 const lines = [
   'Everyday I learn from people who are better than me',
   'I build systems that can be tested, measured and improved',
+  'Let\'s start',
 ]
 
 export default function IntroSequence({ onComplete }) {
@@ -57,7 +58,7 @@ export default function IntroSequence({ onComplete }) {
     <motion.section
       className={`intro ${finished ? 'intro--finished' : ''}`}
       aria-label="Introduction"
-      animate={{ minHeight: finished ? '52svh' : '72svh' }}
+      animate={{ minHeight: finished ? '42svh' : '46svh' }}
       transition={{ duration: reduceMotion ? 0 : 0.65, ease: [0.22, 1, 0.36, 1] }}
     >
       <div className="intro__inner">

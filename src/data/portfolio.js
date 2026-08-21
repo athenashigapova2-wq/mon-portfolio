@@ -48,9 +48,10 @@ export const projects = [
     category: 'Interfaces / Visual Systems',
     year: 'Archive',
     summary: 'Selected interface and visual-system work; the broader archive lives on Behance.',
-    action: 'Explore project',
-    href: '/design',
+    action: 'View Behance',
+    href: 'https://www.behance.net/athena_shig',
     preview: 'design',
+    external: true,
     placeholder: true,
   },
 ]
