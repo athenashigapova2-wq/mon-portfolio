@@ -4,6 +4,7 @@ import FeaturedProject from './components/FeaturedProject.jsx'
 import IntroSequence from './components/IntroSequence.jsx'
 import ProjectIndex from './components/ProjectIndex.jsx'
 import { CookieConsent, CookiePolicyPage } from './components/CookieConsent.jsx'
+import AthenaCaseStudy from './components/AthenaCaseStudy.jsx'
 import { contacts, currently } from './data/portfolio.js'
 
 function SiteHeader({ visible }) {
@@ -57,7 +58,7 @@ function About() {
     <section className="about section" id="about" aria-labelledby="about-title">
       <div className="section-heading"><h2 id="about-title">About / 04</h2><span>Currently</span></div>
       <div className="about__layout">
-        <p className="about__statement">Management student building software and AI products, with a focus on backend systems, applied AI and fintech.</p>
+        <p className="about__statement">I am a Management student, now building software and AI products, with a focus on backend systems, applied AI and fintech.</p>
         <dl className="currently">
           {currently.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}
         </dl>
@@ -100,6 +101,10 @@ export default function App() {
 
   if (window.location.pathname.replace(/\/$/, '') === '/cookies') {
     return <CookiePolicyPage />
+  }
+
+  if (window.location.pathname.replace(/\/$/, '') === '/athena-ai') {
+    return <AthenaCaseStudy />
   }
 
   return (

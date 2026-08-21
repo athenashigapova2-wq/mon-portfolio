@@ -3,6 +3,10 @@
     {
       "source": "/cookies",
       "destination": "/index.html"
+    },
+    {
+      "source": "/athena-ai",
+      "destination": "/index.html"
     }
   ]
 }

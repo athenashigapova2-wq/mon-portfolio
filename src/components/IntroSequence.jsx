@@ -2,6 +2,7 @@ import { motion, useReducedMotion } from 'framer-motion'
 import { useCallback, useEffect, useState } from 'react'
 
 const lines = [
+  'Everyday I learn from people who are better than me',
   'I build systems that can be tested, measured and improved',
 ]
 
