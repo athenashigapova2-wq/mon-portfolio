@@ -16,7 +16,7 @@ function ProjectRow({ project, active, onSelect }) {
       <span className="project-row__title">{project.title}</span>
       <span className="project-row__category">{project.category}</span>
       <span className="project-row__year">{project.year}</span>
-      <span className="project-row__arrow" aria-hidden="true">↗</span>
+      <span className="project-row__arrow" aria-hidden="true">{project.external ? '↗' : '→'}</span>
       <div className="project-row__mobile-preview"><ProjectPreview type={project.preview} /></div>
     </a>
   )

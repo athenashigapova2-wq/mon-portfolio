@@ -5,7 +5,8 @@ import IntroSequence from './components/IntroSequence.jsx'
 import ProjectIndex from './components/ProjectIndex.jsx'
 import { CookieConsent, CookiePolicyPage } from './components/CookieConsent.jsx'
 import AthenaCaseStudy from './components/AthenaCaseStudy.jsx'
-import { contacts, currently } from './data/portfolio.js'
+import ProjectCasePlaceholder from './components/ProjectCasePlaceholder.jsx'
+import { contacts, currently, projects } from './data/portfolio.js'
 
 function SiteHeader({ visible }) {
   return (
@@ -68,16 +69,23 @@ function About() {
 }
 
 function Contacts() {
+  const columns = [contacts.slice(0, 3), contacts.slice(3)]
   return (
     <section className="elsewhere section" id="contacts" aria-labelledby="contacts-title">
-      <p className="elsewhere__cta">Let&apos;s start building together</p>
-      <div className="section-heading"><h2 id="contacts-title">Contacts</h2><span>Links / 05</span></div>
+      <div className="elsewhere__cta-wrap">
+        <p className="elsewhere__cta">Let&apos;s start building together</p>
+        <a className="telegram-cta" href="https://t.me/ami_shig" target="_blank" rel="noreferrer">Message me on Telegram ↗</a>
+      </div>
+      <div className="section-heading"><h2 id="contacts-title">Get acquainted with my work</h2><span>Links / 05</span></div>
       <div className="elsewhere__layout">
-        <ul className="link-list">
-          {contacts.map(([label, href], index) => (
-            <li key={label}><a href={href} target="_blank" rel="noreferrer"><span>0{index + 1}</span><strong>{label}</strong><span aria-hidden="true">↗</span></a></li>
-          ))}
-        </ul>
+        {columns.map((column, columnIndex) => (
+          <ul className="link-list" key={columnIndex}>
+            {column.map(({ label, detail, href }, index) => {
+              const number = columnIndex === 0 ? index + 1 : index + 4
+              return <li key={label}><a href={href} target="_blank" rel="noreferrer"><span>0{number}</span><span><strong>{label}</strong><small>({detail})</small></span><span aria-hidden="true">↗</span></a></li>
+            })}
+          </ul>
+        ))}
       </div>
     </section>
   )
@@ -105,6 +113,16 @@ export default function App() {
 
   if (window.location.pathname.replace(/\/$/, '') === '/athena-ai') {
     return <AthenaCaseStudy />
+  }
+
+  const projectRoutes = {
+    '/data-center': 'sustainability',
+    '/ami-studios': 'ami-studios',
+    '/design': 'design',
+  }
+  const projectId = projectRoutes[window.location.pathname.replace(/\/$/, '')]
+  if (projectId) {
+    return <ProjectCasePlaceholder project={projects.find((project) => project.id === projectId)} />
   }
 
   return (

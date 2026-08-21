@@ -24,10 +24,9 @@ export const projects = [
     category: 'Optimization / Data / Sustainability',
     year: '2026',
     summary: 'An analytical model asking how a data center can operate longer and more efficiently.',
-    action: 'Open spreadsheet',
-    href: 'https://docs.google.com/spreadsheets/d/18EabZ4me0ZVwcCq9dZtdMAkQD0ixIEtL/edit?usp=sharing&ouid=112620720251705614034&rtpof=true&sd=true',
+    action: 'Explore project',
+    href: '/data-center',
     preview: 'model',
-    external: true,
     placeholder: true,
   },
   {
@@ -37,10 +36,9 @@ export const projects = [
     category: 'EdTech / Product / Frontend',
     year: '2026',
     summary: 'Educational product built around online language learning.',
-    action: 'Visit live product',
-    href: 'https://amistudios.ru',
+    action: 'Explore project',
+    href: '/ami-studios',
     preview: 'ami',
-    external: true,
     placeholder: true,
   },
   {
@@ -50,10 +48,9 @@ export const projects = [
     category: 'Interfaces / Visual Systems',
     year: 'Archive',
     summary: 'Selected interface and visual-system work; the broader archive lives on Behance.',
-    action: 'View Behance',
-    href: 'https://www.behance.net/athena_shig',
+    action: 'Explore project',
+    href: '/design',
     preview: 'design',
-    external: true,
     placeholder: true,
   },
 ]
@@ -66,9 +63,9 @@ export const currently = [
 ]
 
 export const contacts = [
-  ['LinkedIn', 'https://www.linkedin.com/in/amina-shigapova-083b70401/'],
-  ['GitHub', 'https://github.com/athenashigapova2-wq'],
-  ['Behance', 'https://www.behance.net/athena_shig'],
-  ['YouTube', 'https://www.youtube.com/@amina_sh'],
-  ['Telegram channel', 'https://t.me/ath_shig'],
+  { label: 'LinkedIn', detail: 'sharing my insights from dev', href: 'https://www.linkedin.com/in/amina-shigapova-083b70401/' },
+  { label: 'GitHub', detail: 'code of all products', href: 'https://github.com/athenashigapova2-wq' },
+  { label: 'Behance', detail: 'design for products', href: 'https://www.behance.net/athena_shig' },
+  { label: 'YouTube', detail: 'lifestyle', href: 'https://www.youtube.com/@amina_sh' },
+  { label: 'Telegram channel', detail: 'thoughts, life, travel', href: 'https://t.me/ath_shig' },
 ]
