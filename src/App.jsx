@@ -38,9 +38,14 @@ function Identity({ visible }) {
     >
       <div className="identity__top"><span className="eyebrow">Portfolio / 2026</span><span>Beijing</span></div>
       <h1 id="identity-title">Amina<br />Shigapova</h1>
+      <p className="identity__role">Applied AI / Backend Engineer</p>
       <div className="identity__bottom">
         <p>I work across software,<br />business and design.</p>
-        <div className="identity__meta"><span>Management · GSOM SPbU</span><span>Exchange · Renmin University</span></div>
+        <div className="identity__meta">
+          <span>Management · GSOM SPbU</span>
+          <span>Exchange · Renmin University</span>
+          <a className="identity__projects-button" href="https://disk.yandex.ru/d/PsNikJGdP51PUg" target="_blank" rel="noreferrer">View projects ↗</a>
+        </div>
         <a href="#work">Selected work <span aria-hidden="true">↓</span></a>
       </div>
     </motion.section>
@@ -52,7 +57,7 @@ function About() {
     <section className="about section" id="about" aria-labelledby="about-title">
       <div className="section-heading"><h2 id="about-title">About / 04</h2><span>Currently</span></div>
       <div className="about__layout">
-        <p className="about__statement">I study management, but most of the things I enjoy building sit somewhere between software, finance and product.</p>
+        <p className="about__statement">Management student building software and AI products, with a focus on backend systems, applied AI and fintech.</p>
         <dl className="currently">
           {currently.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}
         </dl>
@@ -61,20 +66,11 @@ function About() {
   )
 }
 
-function Notes() {
-  return (
-    <section className="notes section" aria-labelledby="notes-title">
-      <div className="notes__index">05 / Notes</div>
-      <h2 id="notes-title">Notes coming<br />as I write them.</h2>
-      <p>AI, finance, software, product and sustainability — once there is something worth publishing.</p>
-    </section>
-  )
-}
-
 function Contacts() {
   return (
     <section className="elsewhere section" id="contacts" aria-labelledby="contacts-title">
-      <div className="section-heading"><h2 id="contacts-title">Contacts</h2><span>Links / 06</span></div>
+      <p className="elsewhere__cta">Let&apos;s start building together</p>
+      <div className="section-heading"><h2 id="contacts-title">Contacts</h2><span>Links / 05</span></div>
       <div className="elsewhere__layout">
         <ul className="link-list">
           {contacts.map(([label, href], index) => (
@@ -116,7 +112,6 @@ export default function App() {
         <ProjectIndex />
         <FeaturedProject />
         <About />
-        <Notes />
         <Contacts />
       </main>
       <Footer />
