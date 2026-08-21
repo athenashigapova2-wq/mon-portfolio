@@ -16,7 +16,7 @@ export default function FeaturedProject() {
       </div>
       <dl className="featured__metadata">
         <div><dt>Role</dt><dd>{project.role}</dd></div>
-        <div><dt>Stack</dt><dd>{project.stack}</dd></div>
+        <div><dt>Stack</dt><dd className="featured__stack-groups">{project.stackGroups.map(([label, value]) => <span key={label}><strong>{label}</strong>{value}</span>)}</dd></div>
         <div><dt>Product areas</dt><dd>Dashboard · Nutrition / food logging · AI chat · Training / recovery</dd></div>
       </dl>
       <div className="featured__media">

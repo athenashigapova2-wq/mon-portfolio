@@ -168,8 +168,8 @@ export default function AthenaCaseStudy() {
           <div className="case-overview">
             <div><span>What it is</span><p>An all-in-one product for meal logging, AI help, workout management and overall wellbeing. Athena adapts to each user and suggests the next useful action.</p></div>
             <div><span>What I built</span><p>User interface, FastAPI backend, GigaChat-2 as the main operating model, and LLM tool calling.</p></div>
-            <div><span>My role</span><p>Full-stack developer</p></div>
-            <div><span>Stack</span><p>JavaScript · React · Node.js · TypeScript · SQL · PostgreSQL · CSS · Docker · JMeter</p></div>
+            <div><span>My role</span><p>Independent Full-stack / Applied AI Engineer</p></div>
+            <div><span>Stack</span><div className="case-stack"><div><strong>Backend</strong><p>Python · JS · FastAPI · Redis · Celery</p></div><div><strong>AI</strong><p>LangGraph · GigaChat · multilingual-e5 · RAG</p></div><div><strong>Data</strong><p>Supabase · PostgreSQL · pgvector</p></div><div><strong>Client / Infra</strong><p>React · Docker · Capacitor · JMeter · Grafana</p></div></div></div>
           </div>
         </section>
 
@@ -189,13 +189,13 @@ export default function AthenaCaseStudy() {
           <SectionHead number="03" title="Data Quality" />
           <Reveal className="data-story">
             <p>Of course, I needed a food database, so I chose the <a href="https://www.kaggle.com/datasets/utsavdey1410/food-nutrition-dataset/data" target="_blank" rel="noreferrer">Food Nutrition Dataset ↗</a>.</p>
-            <p><strong>6,077 kcal / 100g?</strong> The source mixed per-portion calories with per-100g nutrition. I wrote a Python recalculation pipeline and removed 185 irrelevant records.</p>
+            <p><strong>6,077 kcal / 100g?</strong> The source mixed per-portion calories with per-100g nutrition. I wrote a Python recalculation pipeline and removed 185 unrecoverable records.</p>
             <div className="data-result"><strong>2,210</strong><span>valid items</span><strong>0</strong><span>physically impossible rows</span></div>
           </Reveal>
           <div className="data-evidence">
             <figure><img src="/projects/athena-data-before.png" alt="Original food nutrition dataset before cleaning" /><figcaption><span>01 / Before</span><span>Raw nutrition data</span></figcaption></figure>
             <figure><img src="/projects/athena-data-after.png" alt="Food nutrition dataset after cleaning and database preparation" /><figcaption><span>02 / After</span><span>Validated PostgreSQL data</span></figcaption></figure>
-            <div className="data-evidence__method"><span>Method</span><p>I used RStudio to analyze outliers, Python to reframe the dataset, and the built-in SQL editor to add tracking fields such as <code>created_at</code> and <code>embedding</code> for router observability.</p></div>
+            <div className="data-evidence__method"><span>Method</span><p>I used RStudio to investigate outliers, Python to normalize the dataset, and PostgreSQL to store validated records. I later added vector embeddings for semantic retrieval and tracking fields for observability.</p></div>
           </div>
         </section>
 
