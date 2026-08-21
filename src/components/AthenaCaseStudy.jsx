@@ -132,6 +132,7 @@ function LoadTesting() {
           <tr><td>HTTP throughput</td><td>1.722 req/s</td></tr><tr><td>HTTP requests</td><td>21 (6 POST / 15 GET)</td></tr>
         </tbody></table></div>
         <p className="case-caption">With only six E2E scenarios, p95 and p99 equal the maximum. This run is a smoke baseline, not a stable high-percentile estimate.</p>
+        <figure className="load-test-card__evidence"><img src="/projects/athena-grafana-baseline.png" alt="Grafana results for load test one" /><figcaption><span>Test 01</span><span>Grafana / measured result</span></figcaption></figure>
       </article>
       <article className="load-test-card">
         <div className="load-test-card__title"><span>Test 02</span><strong>Repeated 5-user load</strong></div>
@@ -144,6 +145,7 @@ function LoadTesting() {
           <tr><td>GET polling</td><td>67</td><td>71</td></tr><tr><td>Total HTTP requests</td><td>92</td><td>96</td></tr>
         </tbody></table></div>
         <p className="case-caption">Both runs completed all 25 scenarios without errors or dropped jobs. Run 2 improved throughput and p99 while p50 and p95 stayed stable.</p>
+        <figure className="load-test-card__evidence"><img src="/projects/athena-grafana-load.png" alt="Grafana results for repeated five-user load test" /><figcaption><span>Test 02</span><span>Grafana / repeated load</span></figcaption></figure>
       </article>
       <div className="load-environment">
         <span>Measured path</span><p>POST <code>/api/v1/agent/chat</code> queued work in Redis / Celery. GET <code>/api/v1/agent/chat/jobs/{'{job_id}'}</code> polled until succeeded or failed.</p>
@@ -191,14 +193,9 @@ export default function AthenaCaseStudy() {
             <div className="data-result"><strong>2,210</strong><span>valid items</span><strong>0</strong><span>physically impossible rows</span></div>
           </Reveal>
           <div className="data-evidence">
-            <img src="/projects/athena-data.png" alt="Validated food nutrients table in PostgreSQL" />
-            <div><span>Before → after</span><pre><code>{`UPDATE food_nutrients
-SET calories_per_100g =
-  protein_g * 4 + carbs_g * 4 + fat_g * 9
-WHERE calories_per_100g > 900;
-
--- sample
-oats | 357.8 kcal | P 15.6 | C 60.6 | F 6.4`}</code></pre></div>
+            <figure><img src="/projects/athena-data-before.png" alt="Original food nutrition dataset before cleaning" /><figcaption><span>01 / Before</span><span>Raw nutrition data</span></figcaption></figure>
+            <figure><img src="/projects/athena-data-after.png" alt="Food nutrition dataset after cleaning and database preparation" /><figcaption><span>02 / After</span><span>Validated PostgreSQL data</span></figcaption></figure>
+            <div className="data-evidence__method"><span>Method</span><p>I used RStudio to analyze outliers, Python to reframe the dataset, and the built-in SQL editor to add tracking fields such as <code>created_at</code> and <code>embedding</code> for router observability.</p></div>
           </div>
         </section>
 
@@ -234,8 +231,7 @@ oats | 357.8 kcal | P 15.6 | C 60.6 | F 6.4`}</code></pre></div>
 
         <section className="case-section section observability">
           <SectionHead number="07" title="Observability" detail="JMeter → InfluxDB → Grafana" />
-          <div className="observability__images"><figure><img src="/projects/athena-grafana-baseline.png" alt="Grafana baseline load-test dashboard" /><figcaption>Baseline instrumentation</figcaption></figure><figure><img src="/projects/athena-grafana-load.png" alt="Grafana repeated load-test dashboard" /><figcaption>Successful repeated load</figcaption></figure></div>
-          <p>Request latency · CPU · memory · Celery tasks · Redis queue · database connections · LLM latency</p>
+          <div className="observability__metrics"><span>Request latency</span><span>CPU</span><span>Memory</span><span>Celery tasks</span><span>Redis queue</span><span>DB connections</span><span>LLM latency</span></div>
         </section>
 
         <section className="case-section section failures">
