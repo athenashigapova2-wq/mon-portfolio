@@ -116,7 +116,128 @@ function CodePreview() {
   )
 }
 
+const capacityTests = [
+  {
+    id: '02',
+    title: 'Progressive ramp: 10–120 users',
+    image: '/projects/athena-capacity-120.png',
+    alt: 'Grafana dashboard for the progressive load test up to 120 virtual users',
+    columns: ['Users', 'Successful E2E', 'Failed E2E', 'Missing E2E', 'Error rate', 'p50', 'p95', 'p99'],
+    rows: [
+      ['10', '100', '0', '0', '0%', '1,035 ms', '1,052 ms', '1,054 ms'],
+      ['20', '200', '0', '0', '0%', '1,033 ms', '1,059 ms', '1,113 ms'],
+      ['40', '400', '0', '0', '0%', '1,025 ms', '1,041 ms', '1,056 ms'],
+      ['80', '800', '0', '0', '0%', '1,026 ms', '1,054 ms', '1,071 ms'],
+      ['120', '1,200', '0', '0', '0%', '1,025 ms', '1,052 ms', '1,069 ms'],
+    ],
+    conclusion: 'No degradation appeared through 120 virtual users: 2,700 / 2,700 scenarios completed, with no errors or missing jobs. p50 stayed within 1,025–1,035 ms and p95 within 1,041–1,059 ms. Roughly one second comes from JMeter polling the job status once per second; it is not Celery processing time.',
+  },
+  {
+    id: '03',
+    title: 'Preliminary boundary: 160–500 users',
+    image: '/projects/athena-capacity-500-token.png',
+    alt: 'Grafana dashboard for the preliminary 500-user load test',
+    columns: ['Users', 'Successful E2E', 'Failed E2E', 'Missing E2E', 'Error rate', 'p50', 'p95', 'p99'],
+    rows: [
+      ['160', '800', '0', '0', '0%', '1,023 ms', '1,055 ms', '1,109 ms'],
+      ['240', '1,200', '0', '0', '0%', '1,022 ms', '1,042 ms', '1,061 ms'],
+      ['320', '1,600', '0', '0', '0%', '1,020 ms', '1,048 ms', '1,192 ms'],
+      ['400', '2,000', '0', '0', '0%', '1,018 ms', '1,034 ms', '1,069 ms'],
+      ['500', '165', '2,335', '0', '93.4%', '4 ms', '1,018 ms', '1,034 ms'],
+    ],
+    conclusion: 'Up to 400 users, all 5,600 scenarios completed with 0% errors and p95 no higher than 1,055 ms. The failed 500-user run was later traced to token expiry, so it cannot be treated as the backend capacity limit.',
+  },
+  {
+    id: '04',
+    title: 'Ramp semantics check: 500 configured users',
+    image: '/projects/athena-capacity-500-ramp.png',
+    alt: 'Grafana dashboard showing a 500-user ramp test with about 45 active users',
+    columns: ['Users', 'Successful E2E', 'Failed E2E', 'Missing E2E', 'Error rate', 'p50', 'p95', 'p99'],
+    rows: [['500', '2,500', '0', '0', '0%', '1,027 ms', '1,052 ms', '1,098 ms']],
+    conclusion: 'All 2,500 scenarios passed, but this was not a 500-concurrent-user result. With a 60-second ramp and five loops, early threads finished before the final threads started; observed concurrency was approximately 40–45 users.',
+  },
+  {
+    id: '05',
+    title: 'Verified concurrency: 100–500 users',
+    image: '/projects/athena-capacity-500-concurrent.png',
+    alt: 'Grafana dashboard confirming 500 simultaneously active users',
+    columns: ['Users', 'Max active', 'Successful E2E', 'Failed E2E', 'Missing E2E', 'Error rate', 'p50', 'p95'],
+    rows: [
+      ['100', '100', '3,000', '0', '0', '0%', '1,057 ms', '1,138 ms'],
+      ['250', '250', '7,500', '0', '0', '0%', '1,086 ms', '1,190 ms'],
+      ['500', '500', '15,000', '0', '0', '0%', '1,706 ms', '1,964 ms'],
+    ],
+    conclusion: 'All 25,500 scenarios passed and 500 simultaneously active users were confirmed. Between 250 and 500 users, p50 rose 61% and p95 rose 73%, revealing queueing, but the tested capacity still held p95 below two seconds.',
+  },
+  {
+    id: '06',
+    title: 'Upper-range probe: 650–1,000 users',
+    image: '/projects/athena-capacity-1000.png',
+    alt: 'Grafana dashboard for the 1000-concurrent-user load test',
+    columns: ['Users', 'Max active', 'Successful E2E', 'Failed E2E', 'Missing E2E', 'Error rate', 'p50', 'p95'],
+    rows: [
+      ['650', '650', '19,500', '0', '0', '0%', '2,214 ms', '2,990 ms'],
+      ['800', '800', '24,000', '0', '0', '0%', '3,014 ms', '3,531 ms'],
+      ['1,000', '1,000', '30,000', '0', '0', '0%', '3,894 ms', '6,583 ms'],
+    ],
+    conclusion: 'The service remained functionally correct through 1,000 concurrent users with no failed or missing scenarios. At 1,000, however, p95 reached 6.583 seconds and crossed the five-second SLO, separating functional capacity from acceptable latency.',
+  },
+  {
+    id: '07',
+    title: 'Boundary probe: 850 users',
+    image: '/projects/athena-capacity-850.png',
+    alt: 'Grafana dashboard for the 850-concurrent-user load test',
+    columns: ['Users', 'Max active', 'Successful E2E', 'Failed E2E', 'Missing E2E', 'Error rate', 'p50', 'p95'],
+    rows: [['850', '850', '25,500', '0', '0', '0%', '3,233 ms', '5,525 ms']],
+    conclusion: 'All 25,500 scenarios completed without errors, but p95 reached 5.525 seconds. The system was functional at 850 users, while latency was already outside the SLO.',
+  },
+  {
+    id: '08',
+    title: 'Boundary probe: 825 users',
+    image: '/projects/athena-capacity-825.png',
+    alt: 'Grafana dashboard for the 825-concurrent-user load test',
+    columns: ['Users', 'Max active', 'Successful E2E', 'Failed E2E', 'Missing E2E', 'Error rate', 'p50', 'p95'],
+    rows: [['825', '825', '24,750', '0', '0', '0%', '2,929 ms', '3,841 ms']],
+    conclusion: 'At 825 concurrent users, all scenarios passed and p95 remained under five seconds. This placed 825 inside the emerging saturation zone, but one run was not sufficient to call it a stable operating limit.',
+  },
+  {
+    id: '09',
+    title: 'Repeatability check: 840 users',
+    image: '/projects/athena-capacity-840.png',
+    alt: 'Grafana dashboard for repeated 840-concurrent-user load testing',
+    columns: ['Run', 'Users', 'Max active', 'Successful E2E', 'Failed E2E', 'Error rate', 'p50', 'p95'],
+    rows: [
+      ['01', '840', '840', '25,200', '0', '0%', '3,196 ms', '4,216 ms'],
+      ['02', '840', '840', '25,200', '0', '0%', '3,519 ms', '5,317 ms'],
+      ['03', '840', '840', '25,200', '0', '0%', '3,640 ms', '5,223 ms'],
+    ],
+    conclusion: 'All 75,600 scenarios completed, yet two of three runs exceeded the five-second p95 target. The result classifies 840 users as unstable rather than a repeatable SLO limit.',
+  },
+  {
+    id: '10',
+    title: 'SLO confirmation: 800 users',
+    image: '/projects/athena-capacity-800.png',
+    alt: 'Grafana dashboard confirming the 800-concurrent-user SLO limit',
+    columns: ['Run', 'Users', 'Max active', 'Successful E2E', 'Failed E2E', 'Error rate', 'p50', 'p95'],
+    rows: [
+      ['01', '800', '800', '24,000', '0', '0%', '3,385 ms', '4,242 ms'],
+      ['02', '800', '800', '24,000', '0', '0%', '2,786 ms', '3,114 ms'],
+      ['03', '800', '800', '24,000', '0', '0%', '2,720 ms', '3,095 ms'],
+    ],
+    conclusion: 'Across three repeats, 72,000 / 72,000 scenarios passed. Median p50 was 2.786 seconds, median p95 was 3.114 seconds, and the worst p95 was 4.242 seconds—still below the five-second SLO.',
+  },
+]
+
+function CapacityTable({ columns, rows }) {
+  return (
+    <div className="table-wrap capacity-table"><table><thead><tr>{columns.map((column) => <th key={column}>{column}</th>)}</tr></thead>
+      <tbody>{rows.map((row, rowIndex) => <tr key={`${rowIndex}-${row[0]}`}>{row.map((cell, cellIndex) => <td key={`${cellIndex}-${cell}`}>{cell}</td>)}</tr>)}</tbody>
+    </table></div>
+  )
+}
+
 function LoadTesting() {
+  const [detailsOpen, setDetailsOpen] = useState(false)
   return (
     <div className="load-tests">
       <article className="load-test-card">
@@ -134,19 +255,38 @@ function LoadTesting() {
         <p className="case-caption">With only six E2E scenarios, p95 and p99 equal the maximum. This run is a smoke baseline, not a stable high-percentile estimate.</p>
         <figure className="load-test-card__evidence"><img src="/projects/athena-grafana-baseline.png" alt="Grafana results for load test one" /><figcaption><span>Test 01</span><span>Grafana / measured result</span></figcaption></figure>
       </article>
-      <article className="load-test-card">
-        <div className="load-test-card__title"><span>Test 02</span><strong>Repeated 5-user load</strong></div>
-        <div className="table-wrap"><table><thead><tr><th>Metric</th><th>Run 1</th><th>Run 2</th></tr></thead><tbody>
-          <tr><td>Virtual users</td><td>5</td><td>5</td></tr><tr><td>Completed E2E</td><td>25 / 25</td><td>25 / 25</td></tr>
-          <tr><td>Duration</td><td>40.431 s</td><td>37.342 s</td></tr><tr><td>p50</td><td>3.059 s</td><td>3.069 s</td></tr>
-          <tr><td>p95</td><td>4.068 s</td><td>4.122 s</td></tr><tr><td>p99</td><td>6.187 s</td><td>5.087 s</td></tr>
-          <tr><td>E2E throughput</td><td>0.618/s</td><td>0.669/s</td></tr><tr><td>HTTP throughput</td><td>2.275 req/s</td><td>2.571 req/s</td></tr>
-          <tr><td>Error rate</td><td>0%</td><td>0%</td></tr><tr><td>POST enqueue</td><td>25</td><td>25</td></tr>
-          <tr><td>GET polling</td><td>67</td><td>71</td></tr><tr><td>Total HTTP requests</td><td>92</td><td>96</td></tr>
-        </tbody></table></div>
-        <p className="case-caption">Both runs completed all 25 scenarios without errors or dropped jobs. Run 2 improved throughput and p99 while p50 and p95 stayed stable.</p>
-        <figure className="load-test-card__evidence"><img src="/projects/athena-grafana-load.png" alt="Grafana results for repeated five-user load test" /><figcaption><span>Test 02</span><span>Grafana / repeated load</span></figcaption></figure>
+      <article className="load-test-card capacity-summary">
+        <div className="load-test-card__title"><span>Capacity study</span><strong>Progressive overload in user quantity on a local server</strong></div>
+        <p className="capacity-summary__lede">I ran progressive local load tests with increasing real concurrency to find the repeatable latency boundary—not merely the point where requests still returned successfully.</p>
+        <div className="capacity-summary__limit"><strong>800</strong><span>concurrent users<br />confirmed SLO limit</span></div>
+        <dl className="case-facts capacity-summary__facts">
+          <div><dt>Successful E2E</dt><dd>72,000 / 72,000</dd></div><div><dt>Error rate</dt><dd>0%</dd></div>
+          <div><dt>Median p50</dt><dd>2.786 s</dd></div><div><dt>Median p95</dt><dd>3.114 s</dd></div>
+          <div><dt>Worst p95</dt><dd>4.242 s</dd></div><div><dt>SLO threshold</dt><dd>&lt; 5 s</dd></div>
+        </dl>
+        <div className="capacity-classification">
+          <div><span>Stable SLO limit</span><strong>800 users</strong></div>
+          <div><span>Saturation zone</span><strong>825–840 users</strong></div>
+          <div><span>Unstable</span><strong>840 users</strong><p>Two of three runs missed the SLO.</p></div>
+          <div><span>Functional, outside SLO</span><strong>1,000 users</strong><p>0% errors; p95 = 6.583 s.</p></div>
+          <div><span>Recommended production ceiling</span><strong>600–650 users</strong><p>Capacity reserve below the measured limit.</p></div>
+        </div>
+        <button className="capacity-details-button" type="button" onClick={() => setDetailsOpen((value) => !value)} aria-expanded={detailsOpen} aria-controls="capacity-test-details">
+          <span>{detailsOpen ? 'Hide detailed tests' : 'Check detailed tests'}</span><span aria-hidden="true">{detailsOpen ? '−' : '↓'}</span>
+        </button>
       </article>
+      {detailsOpen && <motion.div id="capacity-test-details" className="capacity-details" initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }}>
+        {capacityTests.map((test) => (
+          <article className="capacity-detail" key={test.id}>
+            <div className="load-test-card__title"><span>Test {test.id}</span><strong>{test.title}</strong></div>
+            <CapacityTable columns={test.columns} rows={test.rows} />
+            <div className="capacity-detail__evidence">
+              <figure className="load-test-card__evidence"><img src={test.image} alt={test.alt} /><figcaption><span>Test {test.id}</span><span>Grafana / measured result</span></figcaption></figure>
+              <div className="capacity-detail__conclusion"><span>Conclusion</span><p>{test.conclusion}</p></div>
+            </div>
+          </article>
+        ))}
+      </motion.div>}
       <div className="load-environment">
         <span>Measured path</span><p>POST <code>/api/v1/agent/chat</code> queued work in Redis / Celery. GET <code>/api/v1/agent/chat/jobs/{'{job_id}'}</code> polled until succeeded or failed.</p>
         <span>Environment</span><p>Windows 11 · Docker Desktop / WSL2 · FastAPI :8001 · Redis 7.4-alpine · Celery 5.4, thread pool, concurrency 4 · Supabase · real GigaChat API · JMeter 5.6.3 CLI · InfluxDB · Grafana 12.4.0.</p>
