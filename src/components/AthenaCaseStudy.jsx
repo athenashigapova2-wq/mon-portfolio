@@ -298,7 +298,7 @@ function LoadTesting() {
 export default function AthenaCaseStudy() {
   return (
     <div className="case-page" id="top">
-      <header className="case-nav"><a href="/">AS</a><nav><a href="#architecture">Architecture</a><a href="#results">Results</a><a href={githubUrl} target="_blank" rel="noreferrer">GitHub ↗</a></nav></header>
+      <header className="case-nav"><a href="/">AS</a><nav><a href="#architecture">Architecture</a><a href="#results">Results</a><a href="#load-testing">Load tests</a><a href={githubUrl} target="_blank" rel="noreferrer">GitHub</a></nav></header>
       <main>
         <section className="case-hero section">
           <SectionHead number="00" title="Product" detail="Athena AI / 2026" />
@@ -364,7 +364,7 @@ export default function AthenaCaseStudy() {
           </tbody></table></div>
         </section>
 
-        <section className="case-section section case-section--dark">
+        <section className="case-section section case-section--dark" id="load-testing">
           <SectionHead number="06" title="Load Testing" detail="Real queue, worker, database and GigaChat calls." />
           <LoadTesting />
         </section>
