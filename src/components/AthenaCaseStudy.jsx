@@ -1,17 +1,110 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import { useState } from 'react'
-import routerCode from '../assets/router_agent.py?raw'
 
 const githubUrl = 'https://github.com/athenashigapova2-wq/macrocoach'
 
-const agents = {
-  Nutrition: ['search_food', 'log_meal', 'analyze_macros', 'recommend_meal'],
-  Workout: ['create_workout', 'log_exercise', 'get_training_history'],
-  Recovery: ['log_sleep', 'track_cycle', 'review_recovery'],
-  General: ['get_profile', 'search_knowledge', 'handoff_to_specialist'],
-}
+const proofPoints = [
+  'Multi-agent architecture with specialist routing',
+  'Human-confirmed, idempotent AI tool execution',
+  'LLM evals + longitudinal simulations',
+  'Async backend with Redis/Celery + observability',
+]
 
-const architecture = ['Mobile', 'FastAPI', 'Auth', 'Router', 'Agents', 'Tools', 'PostgreSQL / RAG']
+const stackRows = [
+  ['Frontend', 'React, Vite, Capacitor'],
+  ['Backend', 'Python, FastAPI'],
+  ['AI', 'LangGraph, LangChain, GigaChat'],
+  ['Async', 'Celery, Redis'],
+  ['Data', 'Supabase / PostgreSQL'],
+  ['AI infrastructure', 'RAG, model routing, tracing, evals'],
+  ['Quality', 'pytest, mypy, Ruff, Playwright'],
+  ['DevOps', 'Docker, GitHub Actions'],
+  ['Observability', 'Grafana, InfluxDB'],
+]
+
+const principles = [
+  ['Decouple', 'Async Celery/Redis execution separates API availability from AI latency.'],
+  ['Constrain', "Specialist agents and explicit graphs reduce the LLM's allowed action space."],
+  ['Centralize', 'One AI execution boundary enforces privacy, routing, resilience and tracing.'],
+  ['Validate', 'Server-side deterministic rules verify model-generated decisions.'],
+  ['Authorize', 'Human confirmation, ownership and idempotency protect persistent state.'],
+]
+
+const whyChain = [
+  ['Why not just build a chatbot?', "Because Athena doesn't only generate text. It reasons over user state and can interact with tools."],
+  ['Why does that change architecture?', 'Because probabilistic decisions can now affect persistent application state.'],
+  ['Why is that dangerous?', 'Because LLM outputs are non-deterministic, providers are unreliable, and distributed requests can be retried.'],
+  ['Why not solve this with better prompts?', 'Because prompts can guide behavior, but they cannot guarantee invariants, authorization, idempotency or availability.'],
+  ['So what should the architecture do?', 'Put deterministic software boundaries around probabilistic AI.'],
+]
+
+const engineeringChallenges = [
+  {
+    number: '01',
+    title: 'Safe AI actions',
+    problem: 'LLM agents should not be able to silently mutate user data.',
+    solution: 'A two-phase write protocol with user confirmation, ownership validation, hashed confirmation tokens, idempotency keys and distributed locks.',
+    why: 'It protects against duplicate or unintended state-changing tool calls.',
+  },
+  {
+    number: '02',
+    title: 'Centralized AI execution',
+    problem: 'Direct provider calls across agents make tracing, privacy and failure handling inconsistent.',
+    solution: 'All inference goes through one AI execution layer: AIExecutionService.',
+    why: 'One boundary makes policy and operational behavior consistent across every agent.',
+  },
+  {
+    number: '03',
+    title: 'Deterministic guardrails over prompt-only safety',
+    problem: 'Critical nutrition decisions cannot be trusted to free-form LLM output alone.',
+    solution: 'Athena retrieves server-owned facts and validates structured outputs against deterministic constraints.',
+    why: 'The LLM proposes; the application validates.',
+  },
+]
+
+const snippets = [
+  {
+    number: '01',
+    title: 'Agent routing',
+    code: `graph.add_edge(START, "router")
+graph.add_edge("router", "retriever")
+
+graph.add_conditional_edges(
+    "retriever",
+    _select_route,
+    {
+        "nutrition": "nutrition",
+        "workout": "workout",
+        "recovery": "recovery",
+        "general": "general",
+    },
+)`,
+  },
+  {
+    number: '02',
+    title: 'Idempotent write confirmation',
+    code: `stage
+  ↓
+confirm
+  ↓
+ownership check
+  ↓
+idempotency check
+  ↓
+distributed lock
+  ↓
+execute`,
+  },
+  {
+    number: '03',
+    title: 'AI execution boundary',
+    code: `routing
+  → privacy
+  → resilience
+  → tracing
+  → model invocation`,
+  },
+]
 
 function SectionHead({ number, title, detail }) {
   return (
@@ -37,81 +130,41 @@ function Reveal({ children, className = '' }) {
   )
 }
 
-function Architecture() {
+function SystemArchitecture() {
   const reduceMotion = useReducedMotion()
+  const primaryNodes = ['User / React', 'FastAPI API', 'Auth + validation', 'Async job layer · Celery + Redis', 'Agent Router', 'Retriever']
+  const executionNodes = ['AI Execution Layer', 'Privacy → Model Routing → Resilience → Tracing', 'LLM Provider']
   return (
-    <div className="architecture-flow" aria-label={architecture.join(' to ')}>
-      {architecture.map((node, index) => (
-        <motion.div
-          className="architecture-flow__step"
-          key={node}
-          initial={reduceMotion ? false : { opacity: 0, x: -18 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, amount: 0.75 }}
-          transition={{ duration: reduceMotion ? 0 : 0.45, delay: reduceMotion ? 0 : index * 0.11 }}
-        >
-          <span>{String(index + 1).padStart(2, '0')}</span>
-          <strong>{node}</strong>
-          {index < architecture.length - 1 && <i aria-hidden="true">→</i>}
+    <div className="system-architecture">
+      <div className="system-architecture__main">
+        {primaryNodes.map((node, index) => <ArchitectureNode key={node} node={node} index={index} reduceMotion={reduceMotion} />)}
+        <motion.div className="specialist-branch" initial={reduceMotion ? false : { opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+          {['Nutrition', 'Workout', 'Recovery', 'General'].map((agent) => <span key={agent}>{agent}</span>)}
         </motion.div>
-      ))}
-    </div>
-  )
-}
-
-function AgentExplorer() {
-  const [active, setActive] = useState('Nutrition')
-  return (
-    <div className="agent-explorer">
-      <div className="agent-explorer__router"><span>Router Agent</span><strong>chooses one specialist</strong></div>
-      <div className="agent-explorer__tabs" role="tablist" aria-label="Specialist agents">
-        {Object.keys(agents).map((agent) => (
-          <button
-            type="button"
-            role="tab"
-            aria-selected={active === agent}
-            className={active === agent ? 'is-active' : ''}
-            key={agent}
-            onClick={() => setActive(agent)}
-          >
-            {agent}
-          </button>
-        ))}
+        {executionNodes.map((node, index) => <ArchitectureNode key={node} node={node} index={primaryNodes.length + index} reduceMotion={reduceMotion} />)}
       </div>
-      <motion.div className="agent-explorer__tools" key={active} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-        <span>{active} tools</span>
-        <ul>{agents[active].map((tool) => <li key={tool}>{tool}</li>)}</ul>
-      </motion.div>
+      <aside className="tool-protocol">
+        <span>Tools</span>
+        <i className="tool-protocol__entry" aria-hidden="true">↓</i>
+        <div><strong>Read operation</strong><i>↓</i><p>Execute</p></div>
+        <div><strong>Write operation</strong><i>↓</i><p>Preview → user confirmation → idempotent execution</p></div>
+      </aside>
     </div>
   )
 }
 
-const pythonKeywords = new Set(['from', 'import', 'def', 'return', 'if', 'in', 'for', 'try', 'except', 'pass', 'set', 'dict', 'tuple', 'str', 'sum', 'max', 'lambda', 'else'])
-
-function PythonCode({ code }) {
-  const tokenPattern = /(#.*$|""".*?"""|"[^"\n]*"|'[^'\n]*'|\b(?:from|import|def|return|if|in|for|try|except|pass|set|dict|tuple|str|sum|max|lambda|else|True|False|None)\b)/g
-  return code.split('\n').map((line, lineIndex) => (
-    <span className="code-line" key={`${lineIndex}-${line}`}>
-      {line.split(tokenPattern).filter(Boolean).map((token, tokenIndex) => {
-        let className = ''
-        if (token.startsWith('#')) className = 'token-comment'
-        else if (token.startsWith('"') || token.startsWith("'")) className = 'token-string'
-        else if (pythonKeywords.has(token)) className = 'token-keyword'
-        else if (['True', 'False', 'None'].includes(token)) className = 'token-constant'
-        return <span className={className} key={`${tokenIndex}-${token}`}>{token}</span>
-      })}
-    </span>
-  ))
+function ArchitectureNode({ node, index, reduceMotion }) {
+  return (
+    <motion.div className="architecture-node" initial={reduceMotion ? false : { opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: .7 }} transition={{ duration: reduceMotion ? 0 : .4, delay: reduceMotion ? 0 : Math.min(index * .05, .3) }}>
+      <strong>{node}</strong><i aria-hidden="true">↓</i>
+    </motion.div>
+  )
 }
 
-function CodePreview() {
-  const [open, setOpen] = useState(false)
+function Pipeline({ items, label }) {
   return (
-    <div className="code-preview">
-      <button type="button" onClick={() => setOpen((value) => !value)} aria-expanded={open}>
-        <span>View code</span><span>{open ? 'Close −' : 'Router agent +'}</span>
-      </button>
-      {open && <pre><code><PythonCode code={routerCode} /></code></pre>}
+    <div className="engineering-pipeline" aria-label={label || items.join(' to ')}>
+      {items.map((item, index) => <div key={item}><span>{item}</span>{index < items.length - 1 && <i>↓</i>}</div>)}
     </div>
   )
 }
@@ -240,20 +293,24 @@ function LoadTesting() {
   const [detailsOpen, setDetailsOpen] = useState(false)
   return (
     <div className="load-tests">
-      <article className="load-test-card">
-        <div className="load-test-card__title"><span>Test 01</span><strong>Smoke / baseline</strong></div>
-        <dl className="case-facts">
-          <div><dt>Virtual users</dt><dd>2</dd></div><div><dt>Iterations</dt><dd>3 / user</dd></div>
-          <div><dt>Ramp-up</dt><dd>10 s</dd></div><div><dt>E2E scenarios</dt><dd>6</dd></div>
-          <div><dt>Duration</dt><dd>12.192 s</dd></div><div><dt>Errors</dt><dd>0%</dd></div>
-        </dl>
-        <div className="table-wrap"><table><thead><tr><th>Metric</th><th>Result</th></tr></thead><tbody>
-          <tr><td>Completed E2E</td><td>6 / 6</td></tr><tr><td>p50</td><td>2.058 s</td></tr>
-          <tr><td>p95 / p99</td><td>3.505 s</td></tr><tr><td>E2E throughput</td><td>0.492 scenarios/s</td></tr>
-          <tr><td>HTTP throughput</td><td>1.722 req/s</td></tr><tr><td>HTTP requests</td><td>21 (6 POST / 15 GET)</td></tr>
-        </tbody></table></div>
-        <p className="case-caption">With only six E2E scenarios, p95 and p99 equal the maximum. This run is a smoke baseline, not a stable high-percentile estimate.</p>
-        <figure className="load-test-card__evidence"><img src="/projects/athena-grafana-baseline.png" alt="Grafana results for load test one" /><figcaption><span>Test 01</span><span>Grafana / measured result</span></figcaption></figure>
+      <article className="testing-strategy">
+        <div className="load-test-card__title"><span>Testing strategy</span><strong>Independent quality gates by failure domain</strong></div>
+        <p className="testing-strategy__lede">The current CI is intentionally split into backend, frontend, browser E2E, AI offline regressions and Docker build pipelines.</p>
+        <div className="testing-lanes">
+          {['Backend', 'Frontend', 'Browser E2E', 'AI offline regressions', 'Docker build'].map((lane) => <span key={lane}>{lane}</span>)}
+        </div>
+        <div className="testing-proof-grid">
+          <div><strong>25 / 25</strong><span>successful real-provider E2E scenarios</span></div>
+          <div><strong>0%</strong><span>error rate in baseline load test</span></div>
+          <div><strong>3.07 s</strong><span>p50 end-to-end latency</span></div>
+          <div><strong>5.15 s</strong><span>p95 end-to-end latency</span></div>
+          <div><strong>3 / 3</strong><span>longitudinal AI evaluation checkpoints passed</span></div>
+        </div>
+        <div className="testing-findings">
+          <p>The real-provider load baseline completed 25 / 25 scenarios with 0% errors, p50 ≈ 3.07 s and p95 ≈ 5.15 s.</p>
+          <p>The longitudinal GigaChat baseline passed 3 / 3 hard checkpoints and 3 / 3 semantic checkpoints.</p>
+        </div>
+        <figure className="load-test-card__evidence"><img src="/projects/athena-grafana-load.png" alt="Grafana dashboard for the 25-scenario real-provider baseline" /><figcaption><span>Baseline</span><span>Grafana / real-provider E2E</span></figcaption></figure>
       </article>
       <article className="load-test-card capacity-summary">
         <div className="load-test-card__title"><span>Capacity study</span><strong>Progressive overload in user quantity on a local server</strong></div>
@@ -303,94 +360,82 @@ export default function AthenaCaseStudy() {
         <section className="case-hero section">
           <SectionHead number="00" title="Product" detail="Athena AI / 2026" />
           <h1>Athena AI</h1>
-          <p className="case-hero__lede">AI-powered nutrition, training and recovery assistant.</p>
-          <img src="/projects/macrocoach.png" alt="Four Athena AI mobile product screens" />
-          <div className="case-overview">
-            <div><span>What it is</span><p>An all-in-one product for meal logging, AI help, workout management and overall wellbeing. Athena adapts to each user and suggests the next useful action.</p></div>
-            <div><span>What I built</span><p>User interface, FastAPI backend, GigaChat-2 as the main operating model, and LLM tool calling.</p></div>
-            <div><span>My role</span><p>Independent Full-stack / Applied AI Engineer</p></div>
-            <div><span>Stack</span><div className="case-stack"><div><strong>Backend</strong><p>Python · JS · FastAPI · Redis · Celery</p></div><div><strong>AI</strong><p>LangGraph · GigaChat · multilingual-e5 · RAG</p></div><div><strong>Data</strong><p>Supabase · PostgreSQL · pgvector</p></div><div><strong>Client / Infra</strong><p>React · Docker · Capacitor · JMeter · Grafana</p></div></div></div>
+          <p className="case-hero__lede"><strong>Athena AI is a production-oriented multi-agent AI platform</strong> for personalized health and wellness workflows.</p>
+          <div className="case-hero__context">
+            <p>Built with FastAPI, LangGraph, Redis/Celery, Supabase and React.</p>
+            <p>Designed around deterministic safety guardrails, human-confirmed writes, model routing, observability and LLM evaluation.</p>
           </div>
+          <div className="hero-proof-grid">
+            {proofPoints.map((point, index) => <div key={point}><span>{String(index + 1).padStart(2, '0')}</span><p>{point}</p></div>)}
+          </div>
+          <img src="/projects/macrocoach.png" alt="Four Athena AI mobile product screens" />
         </section>
 
         <section className="case-section section" id="architecture">
-          <SectionHead number="01" title="Architecture" detail="The system assembles as you scroll." />
-          <Architecture />
+          <SectionHead number="01" title="Architecture" detail="The request path, AI boundary and write protocol at a glance." />
+          <SystemArchitecture />
         </section>
 
-        <section className="case-section section case-section--dark">
-          <SectionHead number="02" title="Agents & Tool Calling" detail="A narrow tool surface for every specialist." />
-          <Reveal className="case-two-column"><AgentExplorer /><CodePreview /></Reveal>
-          <p className="case-takeaway">Specialist agents receive only the tools required for their domain.</p>
-          <div className="security-boundary"><span>JWT</span><i>→</i><span>FastAPI</span><i>→</i><span>trusted user_id</span><i>→</i><span>build_tools(user_id)</span></div>
-        </section>
-
-        <section className="case-section section">
-          <SectionHead number="03" title="Data Quality" />
-          <Reveal className="data-story">
-            <p>Of course, I needed a food database, so I chose the <a href="https://www.kaggle.com/datasets/utsavdey1410/food-nutrition-dataset/data" target="_blank" rel="noreferrer">Food Nutrition Dataset ↗</a>.</p>
-            <p><strong>6,077 kcal / 100g?</strong> The source mixed per-portion calories with per-100g nutrition. I wrote a Python recalculation pipeline and removed 185 unrecoverable records.</p>
-            <div className="data-result"><strong>2,210</strong><span>valid items</span><strong>0</strong><span>physically impossible rows</span></div>
-          </Reveal>
-          <div className="data-evidence">
-            <figure><img src="/projects/athena-data-before.png" alt="Original food nutrition dataset before cleaning" /><figcaption><span>01 / Before</span><span>Raw nutrition data</span></figcaption></figure>
-            <figure><img src="/projects/athena-data-after.png" alt="Food nutrition dataset after cleaning and database preparation" /><figcaption><span>02 / After</span><span>Validated PostgreSQL data</span></figcaption></figure>
-            <div className="data-evidence__method"><span>Method</span><p>I used RStudio to investigate outliers, Python to normalize the dataset, and PostgreSQL to store validated records. I later added vector embeddings for semantic retrieval and tracking fields for observability.</p></div>
+        <section className="case-section section tech-stack-section">
+          <SectionHead number="02" title="Tech Stack" detail="Organized by system layer." />
+          <div className="stack-table" role="table" aria-label="Athena AI technology stack">
+            <div className="stack-table__head" role="row"><span role="columnheader">Layer</span><span role="columnheader">Technologies</span></div>
+            {stackRows.map(([layer, technologies]) => <div role="row" key={layer}><strong role="cell">{layer}</strong><span role="cell">{technologies}</span></div>)}
           </div>
         </section>
 
-        <section className="case-section section retrieval" id="results">
-          <SectionHead number="04" title="Retrieval Experiment" detail="A measured multilingual search pipeline." />
-          <div className="retrieval__result"><strong>13%</strong><span>→</span><strong>93%</strong><small>Recall@5</small></div>
-          <div className="retrieval__steps">
-            <div><span>pg_trgm</span><strong>13%</strong></div><div><span>E5-small</span><strong>30%</strong></div>
-            <div><span>E5-base</span><strong>37%</strong></div><div><span>+ translation</span><strong>77%</strong></div>
-            <div><span>+ domain reranking</span><strong>93%</strong></div>
+        <section className="case-section section case-section--dark principles-section">
+          <SectionHead number="03" title="Engineering Principle" detail="The boundary between probabilistic reasoning and application authority." />
+          <blockquote>Athena is designed around one principle: probabilistic AI can propose and reason, while deterministic software owns validation, authorization and state changes.</blockquote>
+          <div className="principles-grid">
+            {principles.map(([title, description], index) => <div key={title}><span>{String(index + 1).padStart(2, '0')}</span><strong>{title}</strong><p>{description}</p></div>)}
           </div>
-          <div className="experiment-summary"><div><span>What failed</span><p>String similarity and larger embeddings alone did not solve multilingual intent.</p></div><div><span>Why</span><p>Queries crossed languages, spelling variants and nutrition-specific terminology.</p></div><div><span>What changed</span><p>Translation normalized intent; domain reranking promoted nutritionally relevant matches.</p></div></div>
         </section>
 
-        <section className="case-section section evaluation">
-          <SectionHead number="05" title="Evaluation" detail="The AI system was not checked by eye." />
-          <div className="evaluation-grid">
-            <div><strong>40</strong><span>labeled router regression cases</span></div><div><strong>5</strong><span>evaluation languages</span></div>
+        <section className="case-section section why-section">
+          <SectionHead number="04" title="You May Wonder Why" detail="Five questions that explain the architecture." />
+          <div className="why-chain">
+            {whyChain.map(([question, answer], index) => <Reveal className="why-item" key={question}><span>Why #{index + 1}</span><h3>{question}</h3><p>{answer}</p></Reveal>)}
           </div>
-          <div className="table-wrap"><table><thead><tr><th>Evaluation</th><th>What it protects</th><th>Method</th></tr></thead><tbody>
-            <tr><td>Router regression</td><td>Correct specialist handoff</td><td>40 labeled cases</td></tr>
-            <tr><td>Tool selection</td><td>Minimum tool surface</td><td>Expected tool assertions</td></tr>
-            <tr><td>Write safety</td><td>User-scoped mutations</td><td>JWT / user_id boundary tests</td></tr>
-            <tr><td>Answer quality</td><td>Useful, grounded responses</td><td>Rubric-based evaluation</td></tr>
-            <tr><td>Retrieval benchmark</td><td>Relevant food matches</td><td>Recall@5 across 5 languages</td></tr>
-          </tbody></table></div>
         </section>
 
-        <section className="case-section section case-section--dark" id="load-testing">
-          <SectionHead number="06" title="Load Testing" detail="Real queue, worker, database and GigaChat calls." />
+        <section className="case-section section challenges-section">
+          <SectionHead number="05" title="Engineering Challenges" detail="The constraints that shaped the production architecture." />
+          <div className="challenge-list">
+            {engineeringChallenges.map((challenge) => <article className="challenge-card" key={challenge.number}>
+              <div className="challenge-card__title"><span>{challenge.number}</span><h3>{challenge.title}</h3></div>
+              <dl><div><dt>Problem</dt><dd>{challenge.problem}</dd></div><div><dt>Solution</dt><dd>{challenge.solution}</dd></div><div><dt>Why it matters</dt><dd>{challenge.why}</dd></div></dl>
+              {challenge.number === '01' && <Pipeline label="Two-phase write protocol" items={['Stage', 'Preview', 'User confirmation', 'Ownership + token validation', 'Idempotency + lock', 'Execute']} />}
+              {challenge.number === '02' && <><Pipeline label="AI execution service pipeline" items={['Agent', 'Model routing', 'Privacy sanitization', 'Circuit breaker / resilience', 'Tracing', 'Provider']} /><p className="challenge-card__boundary">This boundary is implemented in <code>AIExecutionService</code>.</p></>}
+              {challenge.number === '03' && <p className="guardrail-formula"><span>LLM proposes</span><i>→</i><span>application validates</span></p>}
+            </article>)}
+          </div>
+        </section>
+
+        <section className="case-section section snippets-section">
+          <SectionHead number="06" title="Engineering Snippets" detail="Three compact implementation patterns." />
+          <div className="snippet-grid">
+            {snippets.map((snippet) => <article className="engineering-snippet" key={snippet.number}><header><span>{snippet.number}</span><strong>{snippet.title}</strong></header><pre><code>{snippet.code}</code></pre></article>)}
+          </div>
+        </section>
+
+        <section className="case-section section case-section--dark" id="results">
+          <SectionHead number="07" title="Testing & Load Evidence" detail="Real provider calls, separated CI gates and measured concurrency." />
+          <div id="load-testing">
           <LoadTesting />
+          </div>
         </section>
 
-        <section className="case-section section observability">
-          <SectionHead number="07" title="Observability" detail="JMeter → InfluxDB → Grafana" />
-          <div className="observability__metrics"><span>Request latency</span><span>CPU</span><span>Memory</span><span>Celery tasks</span><span>Redis queue</span><span>DB connections</span><span>LLM latency</span></div>
-        </section>
-
-        <section className="case-section section failures">
-          <SectionHead number="08" title="What Didn’t Work" />
-          <ul><li><strong>Larger embeddings</strong><span>did not solve multilingual retrieval.</span></li><li><strong>IVFFlat</strong><span>reduced retrieval quality on a small dataset.</span></li><li><strong>One universal agent</strong><span>exposed too broad a tool surface.</span></li><li><strong>Synchronous processing</strong><span>created a latency bottleneck.</span></li></ul>
-        </section>
-
-        <section className="case-section section evolution">
-          <SectionHead number="09" title="Current Architecture" />
-          <div className="evolution__flow"><div><span>Started with</span><p>One agent and synchronous requests.</p></div><i>→</i><div><span>What broke</span><p>Wide tool access, weak multilingual retrieval and blocked requests.</p></div><i>→</i><div><span>What I measured</span><p>Router behavior, Recall@5, queue latency and E2E percentiles.</p></div><i>→</i><div><span>Where it landed</span><p>Specialist agents, scoped tools, reranked RAG and Redis / Celery jobs.</p></div></div>
-        </section>
-
-        <section className="case-section section limitations">
-          <SectionHead number="10" title="Limitations & Next" />
-          <div className="case-two-column"><div><span>Current limitations</span><ul><li>Small evaluation dataset</li><li>Held-out evaluation is still needed</li><li>Known multilingual edge cases</li><li>External LLM latency</li></ul></div><div><span>Next three steps</span><ol><li>Expand held-out multilingual evaluation</li><li>Add tool-level tracing and cost budgets</li><li>Run sustained and failure-injection load tests</li></ol></div></div>
+        <section className="case-section section role-section">
+          <SectionHead number="08" title="My Role Here" detail="Designed and implemented independently." />
+          <div className="role-layout">
+            <h2>Designed and implemented independently</h2>
+            <ul>{['Backend architecture', 'Agent orchestration', 'AI execution layer', 'Safety mechanisms', 'CI/testing infrastructure', 'Frontend integration', 'Load testing and evaluation'].map((item) => <li key={item}>{item}</li>)}</ul>
+          </div>
         </section>
 
         <section className="case-end section">
-          <SectionHead number="11" title="End" />
+          <SectionHead number="09" title="End" />
           <h2>Athena AI <span>/ 2026</span></h2>
           <div><a href={githubUrl} target="_blank" rel="noreferrer">View GitHub ↗</a><a href="/#work">Back to selected work ←</a></div>
         </section>
