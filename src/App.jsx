@@ -8,6 +8,7 @@ import AthenaCaseStudy from './components/AthenaCaseStudy.jsx'
 import ProjectCasePlaceholder from './components/ProjectCasePlaceholder.jsx'
 import { ContactsSection, SiteFooter } from './components/SiteFooter.jsx'
 import { currently, projects } from './data/portfolio.js'
+import ThemeToggle from './components/ThemeToggle.jsx'
 
 function SiteHeader({ visible }) {
   return (
@@ -24,6 +25,7 @@ function SiteHeader({ visible }) {
         <a href="#work">Work</a>
         <a href="#about">About</a>
         <a href="#contacts">Contacts</a>
+        <ThemeToggle />
       </nav>
     </motion.header>
   )
