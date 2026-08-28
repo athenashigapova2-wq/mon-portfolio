@@ -20,6 +20,9 @@ export const projects = [
     action: 'Explore engineering case',
     href: '/athena-ai',
     preview: 'athena',
+    links: [
+  ['GitHub ↗', 'https://github.com/athenashigapova2-wq/AthenaAI/'],
+],
     placeholder: false,
   },
   {
