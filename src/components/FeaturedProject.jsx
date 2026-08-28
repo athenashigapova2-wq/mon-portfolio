@@ -30,7 +30,7 @@ export default function FeaturedProject() {
       </div>
       <div className="featured__actions">
         <a className="featured__case-link" href="/athena-ai">Explore engineering case <span aria-hidden="true">→</span></a>
-        <a href="https://github.com/athenashigapova2-wq/macrocoach" target="_blank" rel="noreferrer">GitHub ↗</a>
+        <a href="https://github.com/athenashigapova2-wq/AthenaAI/" target="_blank" rel="noreferrer">GitHub ↗</a>
       </div>
     </section>
   )

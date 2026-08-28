@@ -1,7 +1,19 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import { useState } from 'react'
+import { ContactsSection, SiteFooter } from './SiteFooter.jsx'
 
-const githubUrl = 'https://github.com/athenashigapova2-wq/macrocoach'
+const githubUrl = 'https://github.com/athenashigapova2-wq/AthenaAI/'
+
+const caseSections = [
+  ['01', 'Architecture', 'architecture'],
+  ['02', 'Tech Stack', 'tech-stack'],
+  ['03', 'Principle', 'engineering-principle'],
+  ['04', 'Why', 'why'],
+  ['05', 'Challenges', 'challenges'],
+  ['06', 'Snippets', 'snippets'],
+  ['07', 'Testing & Load', 'results'],
+  ['08', 'My Role', 'role'],
+]
 
 const proofPoints = [
   'Multi-agent architecture with specialist routing',
@@ -150,6 +162,14 @@ function SystemArchitecture() {
         <div><strong>Write operation</strong><i>↓</i><p>Preview → user confirmation → idempotent execution</p></div>
       </aside>
     </div>
+  )
+}
+
+function CaseSideNav() {
+  return (
+    <aside className="case-side-nav" aria-label="Athena AI case study sections">
+      {caseSections.map(([number, label, id]) => <a href={`#${id}`} key={id}><span>{number} /</span>{label}</a>)}
+    </aside>
   )
 }
 
@@ -356,6 +376,7 @@ export default function AthenaCaseStudy() {
   return (
     <div className="case-page" id="top">
       <header className="case-nav"><a href="/">AS</a><nav><a href="#architecture">Architecture</a><a href="#results">Results</a><a href="#load-testing">Load tests</a><a href={githubUrl} target="_blank" rel="noreferrer">GitHub</a></nav></header>
+      <CaseSideNav />
       <main>
         <section className="case-hero section">
           <SectionHead number="00" title="Product" detail="Athena AI / 2026" />
@@ -376,15 +397,15 @@ export default function AthenaCaseStudy() {
           <SystemArchitecture />
         </section>
 
-        <section className="case-section section tech-stack-section">
+        <section className="case-section section tech-stack-section" id="tech-stack">
           <SectionHead number="02" title="Tech Stack" detail="Organized by system layer." />
           <div className="stack-table" role="table" aria-label="Athena AI technology stack">
             <div className="stack-table__head" role="row"><span role="columnheader">Layer</span><span role="columnheader">Technologies</span></div>
-            {stackRows.map(([layer, technologies]) => <div role="row" key={layer}><strong role="cell">{layer}</strong><span role="cell">{technologies}</span></div>)}
+            {stackRows.map(([layer, technologies]) => <div role="row" key={layer}><strong role="cell">{layer}</strong><span role="cell">{layer === 'Observability' ? <><a href="#results">Grafana (click here to see dashboards)</a>, InfluxDB</> : technologies}</span></div>)}
           </div>
         </section>
 
-        <section className="case-section section case-section--dark principles-section">
+        <section className="case-section section case-section--dark principles-section" id="engineering-principle">
           <SectionHead number="03" title="Engineering Principle" detail="The boundary between probabilistic reasoning and application authority." />
           <blockquote>Athena is designed around one principle: probabilistic AI can propose and reason, while deterministic software owns validation, authorization and state changes.</blockquote>
           <div className="principles-grid">
@@ -392,14 +413,14 @@ export default function AthenaCaseStudy() {
           </div>
         </section>
 
-        <section className="case-section section why-section">
+        <section className="case-section section why-section" id="why">
           <SectionHead number="04" title="You May Wonder Why" detail="Five questions that explain the architecture." />
           <div className="why-chain">
             {whyChain.map(([question, answer], index) => <Reveal className="why-item" key={question}><span>Why #{index + 1}</span><h3>{question}</h3><p>{answer}</p></Reveal>)}
           </div>
         </section>
 
-        <section className="case-section section challenges-section">
+        <section className="case-section section challenges-section" id="challenges">
           <SectionHead number="05" title="Engineering Challenges" detail="The constraints that shaped the production architecture." />
           <div className="challenge-list">
             {engineeringChallenges.map((challenge) => <article className="challenge-card" key={challenge.number}>
@@ -412,7 +433,7 @@ export default function AthenaCaseStudy() {
           </div>
         </section>
 
-        <section className="case-section section snippets-section">
+        <section className="case-section section snippets-section" id="snippets">
           <SectionHead number="06" title="Engineering Snippets" detail="Three compact implementation patterns." />
           <div className="snippet-grid">
             {snippets.map((snippet) => <article className="engineering-snippet" key={snippet.number}><header><span>{snippet.number}</span><strong>{snippet.title}</strong></header><pre><code>{snippet.code}</code></pre></article>)}
@@ -426,7 +447,7 @@ export default function AthenaCaseStudy() {
           </div>
         </section>
 
-        <section className="case-section section role-section">
+        <section className="case-section section role-section" id="role">
           <SectionHead number="08" title="My Role Here" detail="Designed and implemented independently." />
           <div className="role-layout">
             <h2>Designed and implemented independently</h2>
@@ -440,6 +461,10 @@ export default function AthenaCaseStudy() {
           <div><a href={githubUrl} target="_blank" rel="noreferrer">View GitHub ↗</a><a href="/#work">Back to selected work ←</a></div>
         </section>
       </main>
+      <div className="case-contact-footer">
+        <ContactsSection />
+        <SiteFooter />
+      </div>
     </div>
   )
 }
