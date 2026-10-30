@@ -21,8 +21,10 @@ export const projects = [
     href: '/athena-ai',
     preview: 'athena',
     links: [
-  ['GitHub ↗', 'https://github.com/athenashigapova2-wq/AthenaAI/'],
-],
+      ['GitHub ↗', 'https://github.com/athenashigapova2-wq/AthenaAI/'],
+      ['Web app ↗', 'https://athena-ai-blond.vercel.app/', 'cta'],
+      ['Android APK ↓', 'https://github.com/athenashigapova2-wq/AthenaAI/actions/workflows/android-apk.yml', 'cta'],
+    ],
     placeholder: false,
   },
   {

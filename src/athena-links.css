@@ -33,3 +33,25 @@
 .identity__product-links .identity__projects-button:hover {
   opacity: .72;
 }
+
+.project-row__links .project-row__cta {
+  padding: 9px 13px;
+  color: var(--background);
+  background: var(--text);
+  border: 1px solid var(--text);
+  border-radius: 999px;
+  font-size: 11px;
+  line-height: 1;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+.project-row__links .project-row__cta + .project-row__cta {
+  color: var(--text);
+  background: transparent;
+}
+
+.project-row__links .project-row__cta:hover {
+  opacity: .72;
+}

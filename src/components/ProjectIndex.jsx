@@ -12,7 +12,21 @@ function ProjectRow({ project, active, onSelect }) {
       <div className="project-row__content">
         <a className="project-row__title" href={project.href} target={project.external ? '_blank' : undefined} rel={project.external ? 'noreferrer' : undefined} onFocus={() => onSelect(project.id)}>{project.title}</a>
         <p className="project-row__category">{project.description ?? project.category}</p>
-        {project.links && <div className="project-row__links">{project.links.map(([label, href]) => <a href={href} target="_blank" rel="noreferrer" key={label}>{label}</a>)}</div>}
+        {project.links && (
+          <div className="project-row__links">
+            {project.links.map(([label, href, variant]) => (
+              <a
+                className={variant === 'cta' ? 'project-row__cta' : undefined}
+                href={href}
+                target="_blank"
+                rel="noreferrer"
+                key={label}
+              >
+                {label}
+              </a>
+            ))}
+          </div>
+        )}
       </div>
       <span className="project-row__year">{project.year}</span>
       <a className="project-row__arrow" href={project.href} target={project.external ? '_blank' : undefined} rel={project.external ? 'noreferrer' : undefined} aria-label={`Open ${project.title}`}>{project.external ? '↗' : '→'}</a>
