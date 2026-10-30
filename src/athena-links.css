@@ -1,0 +1,35 @@
+.identity__product {
+  display: grid;
+  gap: 9px;
+  margin-top: 12px;
+}
+
+.identity__product-label {
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+}
+
+.identity__product-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.identity__product-links .identity__projects-button {
+  margin-top: 0;
+  color: var(--background);
+  background: var(--text);
+  border: 1px solid var(--text);
+}
+
+.identity__product-links .identity__projects-button--secondary {
+  color: var(--text);
+  background: transparent;
+}
+
+.identity__product-links .identity__projects-button:hover {
+  opacity: .72;
+}

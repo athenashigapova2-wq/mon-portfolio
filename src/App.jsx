@@ -9,6 +9,7 @@ import ProjectCasePlaceholder from './components/ProjectCasePlaceholder.jsx'
 import { ContactsSection, SiteFooter } from './components/SiteFooter.jsx'
 import { currently, projects } from './data/portfolio.js'
 import ThemeToggle from './components/ThemeToggle.jsx'
+import './athena-links.css'
 
 function SiteHeader({ visible }) {
   return (
@@ -49,6 +50,28 @@ function Identity({ visible }) {
         <div className="identity__meta">
           <span>Management · GSOM SPbU</span>
           <span>Exchange · Renmin University</span>
+          <div className="identity__product">
+            <span className="identity__product-label">Try Athena AI</span>
+            <div className="identity__product-links">
+              <a
+                className="identity__projects-button"
+                href="https://athena-ai-blond.vercel.app/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Web app ↗
+              </a>
+              <a
+                className="identity__projects-button identity__projects-button--secondary"
+                href="https://github.com/athenashigapova2-wq/AthenaAI/actions/workflows/android-apk.yml"
+                target="_blank"
+                rel="noreferrer"
+                title="Open the latest Android APK build"
+              >
+                Android APK ↓
+              </a>
+            </div>
+          </div>
           <a className="identity__projects-button" href="https://disk.yandex.ru/d/PsNikJGdP51PUg" target="_blank" rel="noreferrer">View projects ↗</a>
         </div>
         <a href="#work">Selected work <span aria-hidden="true">↓</span></a>
